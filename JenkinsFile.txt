@@ -25,5 +25,15 @@ pipeline {
       }
 
     }
+
+    stage('BuildWebApp') {
+      steps {
+
+        git 'https://github.com/dhalarnk/DevOps-Demo-WebApp.git'
+
+        sh "mvn compile"
+
+      }
+    }
   }
 }

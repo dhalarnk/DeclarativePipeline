@@ -102,5 +102,32 @@ pipeline {
 
     }
 
+    stage('DeployToProd') {
+      steps {
+
+        git 'https://github.com/dhalarnk/DevOps-Demo-WebApp.git'
+
+        sh "mvn clean install"
+
+        deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.46.88:8080/')],
+          contextPath: '/ProdWebapp',
+          war: '**/*.war'
+
+      }
+    }
+
+    stage('SanityTest') {
+
+      steps {
+
+        git 'https://github.com/dhalarnk/DevOps-Demo-WebApp.git'
+
+        sh "mvn -f Acceptancetest/pom.xml test"
+
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: ''])
+      }
+
+    }
+
   }
 }

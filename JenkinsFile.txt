@@ -18,7 +18,9 @@ pipeline {
       steps {
 
         git 'https://github.com/dhalarnk/DevOps-Demo-WebApp.git'
-
+        
+        sh "mvn validate"
+        
         withSonarQubeEnv('sonarqube') {
           sh "${scannerHome}/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.projectKey=WEBPOC:AVNCommunication -Dsonar.sources=. -Dsonar.tests=. -Dsonar.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.test.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=sonar"
         }

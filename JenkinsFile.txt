@@ -93,5 +93,14 @@ pipeline {
 
     }
 
+    stage('PerformanceTest') {
+
+      steps {
+
+        blazeMeterTest credentialsId: 'Blazemeter', testId: '9014511.taurus', workspaceId: '756601'
+      }
+
+    }
+
   }
 }

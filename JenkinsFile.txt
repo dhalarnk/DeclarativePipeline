@@ -42,9 +42,16 @@ pipeline {
 
         sh "mvn package"
 
-        deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.37.215:8080/')],
-          contextPath: '/QAWebapp',
-          war: '**/*.war'
+        post {
+          success {
+
+            deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.37.215:8080/')],
+              contextPath: '/QAWebapp',
+              war: '**/*.war'
+
+            echo "'Deploy to QA' - completed successfully."
+          }
+        }
 
       }
     }
@@ -109,10 +116,15 @@ pipeline {
 
         sh "mvn clean install"
 
-        deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.46.88:8080/')],
-          contextPath: '/ProdWebapp',
-          war: '**/*.war'
+        post {
+          success {
+            deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.46.88:8080/')],
+              contextPath: '/ProdWebapp',
+              war: '**/*.war'
 
+            echo "'Deploy to Prod' - completed successfully."
+          }
+        }
       }
     }
 

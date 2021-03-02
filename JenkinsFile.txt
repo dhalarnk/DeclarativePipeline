@@ -24,6 +24,20 @@ pipeline {
         }
       }
 
+      post {
+        always {
+          slackSend channel: 'alerts', color: 'good', message: '"Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'slack', username: 'jenkins'
+        }
+        success {
+          slackSend channel: 'alerts', color: 'good', message: '"Success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'slack', username: 'jenkins'
+        }
+
+        failure {
+          slackSend channel: 'alerts', color: 'danger', message: '"Failed ${env.JOB_NAME}  ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'slack', username: 'jenkins'
+        }
+
+      }
+
     }
 
     stage('BuildWebApp') {
@@ -173,12 +187,22 @@ pipeline {
 
       }
       post {
+
+        always {
+          slackSend channel: 'alerts', color: 'good', message: '"Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'slack', username: 'jenkins'
+        }
         success {
           publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: ''])
 
           echo "SanityTest results published successfully."
+          slackSend channel: 'alerts', color: 'good', message: '"Success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'slack', username: 'jenkins'
 
         }
+
+        failure {
+          slackSend channel: 'alerts', color: 'danger', message: '"Failed ${env.JOB_NAME}  ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'slack', username: 'jenkins'
+        }
+
       }
 
     }

@@ -44,6 +44,10 @@ pipeline {
 
       }
       post {
+        always {
+          jiraSendBuildInfo branch: 'SQ9DEV-1', site: 'hddevopsjiracloud.atlassian.net'
+        }
+
         success {
 
           deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.37.215:8080/')],
@@ -51,6 +55,15 @@ pipeline {
             war: '**/*.war'
 
           echo "'Deploy to QA' - completed successfully."
+
+          jiraComment body: 'Build Success - Review Build and Deployment Info for Test server', issueKey: 'SQ9DEV-1'
+          jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test', environmentType: 'testing', issueKeys: ['SQ9DEV-1'], serviceIds: [''], site: 'hddevopsjiracloud.atlassian.net', state: 'successful'
+
+        }
+
+        failure {
+          jiraComment body: 'Build Failed - Review Build and Deployment Info for Test server', issueKey: 'SQ9DEV-1'
+          jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test', environmentType: 'testing', issueKeys: ['SQ9DEV-1'], serviceIds: [''], site: 'hddevopsjiracloud.atlassian.net', state: 'failed'
         }
       }
     }
@@ -126,6 +139,10 @@ pipeline {
       }
 
       post {
+
+        always {
+          jiraSendBuildInfo branch: 'SQ9DEV-1', site: 'hddevopsjiracloud.atlassian.net'
+        }
         success {
 
           deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.46.88:8080/')],
@@ -133,7 +150,16 @@ pipeline {
             war: '**/*.war'
 
           echo "'Deploy to Prod' - completed successfully."
+
+          jiraComment body: 'Build Success - Review Build and Deployment Info for Test server', issueKey: 'SQ9DEV-1'
+          jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Prod', environmentType: 'production', issueKeys: ['SQ9DEV-1'], serviceIds: [''], site: 'hddevopsjiracloud.atlassian.net', state: 'successful'
         }
+
+        failure {
+          jiraComment body: 'Build Failed - Review Build and Deployment Info for Test server', issueKey: 'SQ9DEV-1'
+          jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Prod', environmentType: 'production', issueKeys: ['SQ9DEV-1'], serviceIds: [''], site: 'hddevopsjiracloud.atlassian.net', state: 'failed'
+        }
+
       }
     }
 

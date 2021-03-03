@@ -26,14 +26,14 @@ pipeline {
 
       post {
         always {
-          slackSend channel: 'alerts', color: 'good', message: "Started - Job Name - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
+          slackSend channel: 'alerts', color: 'good', message: "Statick Code Analysis started - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
         }
         success {
-          slackSend channel: 'alerts', color: 'good', message: "Success - Job Name - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
+          slackSend channel: 'alerts', color: 'good', message: "Static Code Analysis completed successfully - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
         }
 
         failure {
-          slackSend channel: 'alerts', color: 'danger', message: "Failed - Job Name - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
+          slackSend channel: 'alerts', color: 'danger', message: "Static Code Analysis failed - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
         }
 
       }
@@ -189,18 +189,18 @@ pipeline {
       post {
 
         always {
-          slackSend channel: 'alerts', color: 'good', message: "Started - Job Name - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
+          slackSend channel: 'alerts', color: 'good', message: "Sanity Test started - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
         }
         success {
           publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: ''])
 
           echo "SanityTest results published successfully."
-          slackSend channel: 'alerts', color: 'good', message: "Success - Job Name - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
+          slackSend channel: 'alerts', color: 'good', message: "Sanity Test completed successfully - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
 
         }
 
         failure {
-          slackSend channel: 'alerts', color: 'danger', message: "Failed - Job Name - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
+          slackSend channel: 'alerts', color: 'danger', message: "Sanity Test failed - ${env.JOB_NAME}, Build# - ${env.BUILD_NUMBER}, (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack', username: 'jenkins'
         }
 
       }
